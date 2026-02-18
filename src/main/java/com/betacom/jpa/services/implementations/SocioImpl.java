@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.jpa.dto.inputs.SocioReq;
+import com.betacom.jpa.dto.outputs.CertificatoDTO;
 import com.betacom.jpa.dto.outputs.SocioDTO;
 import com.betacom.jpa.exceptions.AcademyException;
 import com.betacom.jpa.models.Socio;
@@ -61,6 +62,11 @@ public class SocioImpl implements ISocioServices{
 						.nome(s.getNome())
 						.codiceFiscale(s.getCodiceFiscale())
 						.email(s.getEmail())
+						.certificato(CertificatoDTO.builder()
+								.id(s.getCertificato().getId())
+								.tipo(s.getCertificato().getTipo())
+								.dataCertificato(s.getCertificato().getDataCertificato())
+								.build())
 						.build()				
 						).toList();
 	}

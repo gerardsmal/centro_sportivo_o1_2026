@@ -15,5 +15,5 @@ public class SocioDTO {
 	private String nome;
 	private String codiceFiscale;
 	private String email;
-
+	private CertificatoDTO certificato;
 }

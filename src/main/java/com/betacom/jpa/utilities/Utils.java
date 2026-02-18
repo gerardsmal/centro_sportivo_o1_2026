@@ -1,4 +1,4 @@
-package com.betacom.jpa.uilities;
+package com.betacom.jpa.utilities;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

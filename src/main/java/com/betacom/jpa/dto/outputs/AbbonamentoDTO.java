@@ -6,13 +6,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-@Setter
+
 @Getter
+@Setter
 @Builder
 @ToString
-public class CertificatoDTO {
+public class AbbonamentoDTO {
 	private Integer id;
-	private Boolean tipo; // false normale true agosnistico
-	private LocalDate dataCertificato;
-	
+	private LocalDate dataInscizione;
+
 }

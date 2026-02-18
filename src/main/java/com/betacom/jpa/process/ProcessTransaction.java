@@ -26,14 +26,19 @@ public class ProcessTransaction {
 	public int aggiornamenti(SocioReq req) throws Exception {
 		int id = insertSocio(req);
 		
-		req = new SocioReq();
-		req.setCodiceFiscale("SMLGER123034");
-		req.setId(id);
-		update(req);
+//		req = new SocioReq();
+//		req.setCodiceFiscale("BSTPIE1232828");
+//		req.setId(id);
+//		update(req);
 		return id;
 	}
 	
+	@Transactional (rollbackFor = Exception.class)
+	public void delete(Integer id) throws Exception{
+		socioS.delete(id);
+	}
 
+	
 	private int insertSocio(SocioReq req) throws  Exception{
 		int id = 0;
 		id = socioS.create(req);
