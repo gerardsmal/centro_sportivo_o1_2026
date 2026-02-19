@@ -14,4 +14,5 @@ public interface ISocioServices {
 
 	
 	List<SocioDTO> findAll() throws Exception;
+	SocioDTO findById(Integer id) throws Exception;
 }

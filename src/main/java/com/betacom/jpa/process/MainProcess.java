@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.betacom.jpa.dto.inputs.AbbonamentoReq;
 import com.betacom.jpa.dto.inputs.CertificatoReq;
 import com.betacom.jpa.dto.inputs.SocioReq;
 import com.betacom.jpa.dto.outputs.SocioDTO;
@@ -38,16 +39,18 @@ public class MainProcess {
 		req.setEmail("a.bonino@gmail.it");
 		int id = 0;
 		try {
-			id = trans.aggiornamenti(req);
-			CertificatoReq reqC = new CertificatoReq();
-			reqC.setDataCertificato("01/02/2026");
-			reqC.setSocioID(id);
-			trans.insertCertificato(reqC);
+//			id = trans.aggiornamenti(req);
+//			CertificatoReq reqC = new CertificatoReq();
+//			reqC.setDataCertificato("01/02/2026");
+//			reqC.setSocioID(id);
+//			trans.insertCertificato(reqC);
 			
 //			ListSocioViaCertificato();
 //			trans.delete(6);
-			listSocio();
-
+//			createAbbonamento(8);
+			
+//			listSocio();
+			listSocioById(8);
 			
 		} catch (Exception e) {
 			log.error("Error found in process: {}", e.getMessage());
@@ -57,12 +60,26 @@ public class MainProcess {
 		
 	}
 
-
+	private void createAbbonamento (Integer id) throws Exception{
+		AbbonamentoReq req = new AbbonamentoReq();
+		req.setDataInscizione("15/12/2025");
+		req.setSocioID(id);
+		trans.insertAbbonamento(req);
+	}
 	
 	private void listSocio() {
 		try {
 			List<SocioDTO> lS = socioS.findAll();
 			lS.forEach(s -> log.debug(s.toString()));
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+	}
+	
+	private void listSocioById(Integer id) {
+		try {
+			SocioDTO s = socioS.findById(id);
+			log.debug(s.toString());
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
