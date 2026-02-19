@@ -1,6 +1,7 @@
 package com.betacom.jpa.services.implementations;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.jpa.dto.inputs.CertificatoReq;
 import com.betacom.jpa.dto.outputs.CertificatoDTO;
@@ -29,6 +30,7 @@ public class CertificatoImpl implements ICertificatoServices{
 		this.repoS = repoS;
 	}
 	
+	@Transactional (rollbackFor = AcademyException.class)
 	@Override
 	public void create(CertificatoReq req) throws Exception {
 		log.debug("create {}", req);

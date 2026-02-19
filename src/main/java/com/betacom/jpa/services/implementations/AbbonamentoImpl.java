@@ -3,6 +3,7 @@ package com.betacom.jpa.services.implementations;
 import static com.betacom.jpa.utilities.Utils.stringToDate;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.jpa.dto.inputs.AbbonamentoReq;
 import com.betacom.jpa.exceptions.AcademyException;
@@ -27,7 +28,8 @@ public class AbbonamentoImpl implements IAbbonamentoServices{
 		this.abbR = abbR;
 		this.socioR = socioR;
 	}
-
+	
+	@Transactional (rollbackFor = AcademyException.class)
 	@Override
 	public void create(AbbonamentoReq req) throws Exception {
 		log.debug("create {}", req);
@@ -39,6 +41,19 @@ public class AbbonamentoImpl implements IAbbonamentoServices{
 		
 		abbR.save(abb);
 		
+	}
+
+	@Override
+	public void delete(Integer id) throws Exception {
+		log.debug("delete {}", id);
+
+		Abbonamento abb = abbR.findById(id)
+				.orElseThrow(() -> new AcademyException("Abbonamento non trovato"));
+
+		if (!abb.getAttivitas().isEmpty())
+			throw new AcademyException("Ci sono attivita per quest'abbonamento");
+		
+		abbR.delete(abb);
 	}
 
 

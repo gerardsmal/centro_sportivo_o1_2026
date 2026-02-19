@@ -1,0 +1,58 @@
+package com.betacom.jpa.process;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.betacom.jpa.dto.inputs.AttivitaReq;
+import com.betacom.jpa.dto.outputs.AttivitaDTO;
+import com.betacom.jpa.services.implementations.AbbonamentoImpl;
+import com.betacom.jpa.services.interfaces.IAttivitaServices;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Component
+public class ProcessAttivita {
+
+    private final AbbonamentoImpl abbonamentoImpl;
+	private final IAttivitaServices attS;
+
+	public ProcessAttivita(IAttivitaServices attS, AbbonamentoImpl abbonamentoImpl) {
+		this.attS = attS;
+		this.abbonamentoImpl = abbonamentoImpl;
+	}
+	
+	@Transactional (rollbackFor = Exception.class)
+	public void  createAttivita() throws Exception{
+		List<AttivitaReq> lreq = new ArrayList<AttivitaReq>();
+		AttivitaReq req = new AttivitaReq();
+		req.setDescription("Yoga");
+		lreq.add(req);
+		req = new AttivitaReq();
+		req.setDescription("Karate");
+		lreq.add(req);
+		req = new AttivitaReq();
+		req.setDescription("Ritmica");
+		lreq.add(req);
+		for (AttivitaReq r : lreq) {
+			attS.create(r);
+		}
+	}
+	@Transactional (rollbackFor = Exception.class)	
+	public void createAttivitaAbbonamento(AttivitaReq req) throws Exception{
+		attS.createAttivitaAbbonamento(req);
+	}
+	@Transactional (rollbackFor = Exception.class)
+	public void deleteAttivita(Integer id) throws Exception{
+		attS.delete(id);
+	}
+	
+	public void list() {
+		List<AttivitaDTO> lA = attS.list();
+		lA.forEach(a -> log.debug(a.toString()));
+	}
+	
+}

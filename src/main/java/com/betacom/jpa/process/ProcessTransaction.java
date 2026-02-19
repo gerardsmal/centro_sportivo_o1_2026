@@ -49,6 +49,12 @@ public class ProcessTransaction {
 	public void insertAbbonamento(AbbonamentoReq req) throws Exception{
 		abbS.create(req);
 	}
+
+	@Transactional (rollbackFor = Exception.class)
+	public void deleteAbbonamento(Integer id) throws Exception{
+		abbS.delete(id);
+	}
+
 	
 	private int insertSocio(SocioReq req) throws  Exception{
 		int id = 0;

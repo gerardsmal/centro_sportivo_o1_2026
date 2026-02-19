@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.jpa.dto.inputs.AbbonamentoReq;
+import com.betacom.jpa.dto.inputs.AttivitaReq;
 import com.betacom.jpa.dto.inputs.CertificatoReq;
 import com.betacom.jpa.dto.inputs.SocioReq;
 import com.betacom.jpa.dto.outputs.SocioDTO;
@@ -20,14 +21,17 @@ import lombok.extern.slf4j.Slf4j;
 public class MainProcess {
 	private final ISocioServices socioS;
 	private final ProcessTransaction trans;
+	private final ProcessAttivita attiv;
 	private final ICertificatoServices certS;
 
 	public MainProcess(ISocioServices socioS, 
 			ProcessTransaction trans,
-			ICertificatoServices certS) {
+			ICertificatoServices certS,
+			ProcessAttivita attiv) {
 		this.socioS = socioS;
 		this.trans = trans;
 		this.certS = certS;
+		this.attiv = attiv;
 	}
 	
 	public void executeSocio() {
@@ -50,8 +54,12 @@ public class MainProcess {
 //			createAbbonamento(8);
 			
 //			listSocio();
-			listSocioById(8);
-			
+//			listSocioById(8);
+//			attiv.createAttivita();
+			attiv.list();
+//			createAbbonamentoAvvitita(1, 4);
+//			attiv.deleteAttivita(4);
+			trans.deleteAbbonamento(2);
 		} catch (Exception e) {
 			log.error("Error found in process: {}", e.getMessage());
 		}
@@ -94,6 +102,13 @@ public class MainProcess {
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
+	}
+	
+	private void createAbbonamentoAvvitita(int abbID, int attiId) throws Exception{
+		AttivitaReq req = new AttivitaReq();
+		req.setId(attiId);
+		req.setAbbonamentID(abbID);
+		attiv.createAttivitaAbbonamento(req);
 	}
 }
 

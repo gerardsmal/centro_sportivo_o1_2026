@@ -10,6 +10,7 @@ public interface IAttivitaServices {
 	void update(AttivitaReq req) throws Exception;
 	void delete(Integer id) throws Exception;
 
+	void createAttivitaAbbonamento(AttivitaReq req) throws Exception;
 	
 	List<AttivitaDTO> list();
 }
