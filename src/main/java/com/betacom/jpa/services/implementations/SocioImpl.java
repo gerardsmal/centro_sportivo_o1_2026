@@ -9,25 +9,30 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.jpa.dto.inputs.SocioReq;
 import com.betacom.jpa.dto.outputs.AbbonamentoDTO;
+import com.betacom.jpa.dto.outputs.AttivitaDTO;
 import com.betacom.jpa.dto.outputs.CertificatoDTO;
 import com.betacom.jpa.dto.outputs.SocioDTO;
 import com.betacom.jpa.exceptions.AcademyException;
 import com.betacom.jpa.models.Abbonamento;
+import com.betacom.jpa.models.Attivita;
 import com.betacom.jpa.models.Socio;
 import com.betacom.jpa.repositories.ISocioRepository;
+import com.betacom.jpa.services.interfaces.IMessagioServices;
 import com.betacom.jpa.services.interfaces.ISocioServices;
 
+import static com.betacom.jpa.utilities.Mapper.buildAbbonamentoDTO;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class SocioImpl implements ISocioServices{
 
 	private final ISocioRepository socioR;
-
-	public SocioImpl(ISocioRepository socioR) {
-		this.socioR = socioR;
-	}
+	private final IMessagioServices msgS;
+	
 	@Transactional (rollbackFor = AcademyException.class)
 	@Override
 	public Integer create(SocioReq req) throws AcademyException {
@@ -77,16 +82,18 @@ public class SocioImpl implements ISocioServices{
 		
 		
 	}
+	
 	@Transactional (rollbackFor = AcademyException.class)
 	@Override
 	public void delete(Integer id) throws AcademyException {
 		log.debug("delete {}", id);
-		Optional<Socio> soc = socioR.findById(id);
-		if (soc.isEmpty())
-			throw new AcademyException("Socio non trovato in DB");
+		Socio soc = socioR.findById(id)
+				.orElseThrow(() ->new AcademyException("Socio non trovato in DB"));
 		
+		if (!soc.getAbbonementos().isEmpty())
+			throw new AcademyException(msgS.get("abbo_exist"));
 
-		socioR.delete(soc.get());
+		socioR.delete(soc);
 	}
 
 	@Override
@@ -113,14 +120,6 @@ public class SocioImpl implements ISocioServices{
 	
 	
 
-	private List<AbbonamentoDTO> buildAbbonamentoDTO(List<Abbonamento> lA){
-		return lA.stream()
-				.map(a -> AbbonamentoDTO.builder()
-						.id(a.getId())
-						.dataInscizione(a.getDataInscizione())
-						.build()						
-						).collect(Collectors.toList());
-	}
 	@Override
 	public SocioDTO findById(Integer id) throws Exception {
 		log.debug("findById: {}", id);

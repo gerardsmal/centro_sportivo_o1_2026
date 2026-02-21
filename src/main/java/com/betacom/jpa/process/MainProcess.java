@@ -9,6 +9,7 @@ import com.betacom.jpa.dto.inputs.AbbonamentoReq;
 import com.betacom.jpa.dto.inputs.AttivitaReq;
 import com.betacom.jpa.dto.inputs.CertificatoReq;
 import com.betacom.jpa.dto.inputs.SocioReq;
+import com.betacom.jpa.dto.outputs.AbbonamentoDTO;
 import com.betacom.jpa.dto.outputs.SocioDTO;
 import com.betacom.jpa.exceptions.AcademyException;
 import com.betacom.jpa.services.interfaces.ICertificatoServices;
@@ -50,16 +51,28 @@ public class MainProcess {
 //			trans.insertCertificato(reqC);
 			
 //			ListSocioViaCertificato();
-//			trans.delete(6);
-//			createAbbonamento(8);
+			trans.delete(10);
+//			createAbbonamento(10);
 			
 //			listSocio();
 //			listSocioById(8);
 //			attiv.createAttivita();
-			attiv.list();
-//			createAbbonamentoAvvitita(1, 4);
+//			attiv.list();
+//			createAbbonamentoAvvitita(3, 4);
+//			createAbbonamentoAvvitita(3, 6);
+//			createAbbonamentoAvvitita(4, 4);
+//			createAbbonamentoAvvitita(5, 4);
 //			attiv.deleteAttivita(4);
-			trans.deleteAbbonamento(2);
+//			trans.deleteAbbonamento(1);
+//			attiv.deleteAttivitaAbbonamento(3, 6);
+//			listSocio();
+			
+//			AbbonamentoDTO ab =  trans.getAbbonamento(3);
+//			log.debug(ab.toString());
+//			
+//			log.debug("**** abbonamenti per attivita (4)");
+//			attiv.getByAttivita(4);
+			
 		} catch (Exception e) {
 			log.error("Error found in process: {}", e.getMessage());
 		}

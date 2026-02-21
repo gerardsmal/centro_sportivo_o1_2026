@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.jpa.dto.inputs.AttivitaReq;
+import com.betacom.jpa.dto.outputs.AbbonamentoDTO;
 import com.betacom.jpa.dto.outputs.AttivitaDTO;
 import com.betacom.jpa.services.implementations.AbbonamentoImpl;
 import com.betacom.jpa.services.interfaces.IAttivitaServices;
@@ -45,9 +46,21 @@ public class ProcessAttivita {
 	public void createAttivitaAbbonamento(AttivitaReq req) throws Exception{
 		attS.createAttivitaAbbonamento(req);
 	}
+
+	@Transactional (rollbackFor = Exception.class)	
+	public void deleteAttivitaAbbonamento(Integer idAbb, Integer idAtti) throws Exception{
+		attS.deleteAttivitaAbbonamento(idAbb, idAtti);
+	}
+
+	
 	@Transactional (rollbackFor = Exception.class)
 	public void deleteAttivita(Integer id) throws Exception{
 		attS.delete(id);
+	}
+
+	public void getByAttivita(Integer id) throws Exception{
+		List<AbbonamentoDTO> lA = attS.getByIdAttivita(id);
+		lA.forEach(a -> log.debug(a.toString()));
 	}
 	
 	public void list() {

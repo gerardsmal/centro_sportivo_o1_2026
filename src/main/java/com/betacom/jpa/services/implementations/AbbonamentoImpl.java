@@ -6,12 +6,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.jpa.dto.inputs.AbbonamentoReq;
+import com.betacom.jpa.dto.outputs.AbbonamentoDTO;
 import com.betacom.jpa.exceptions.AcademyException;
 import com.betacom.jpa.models.Abbonamento;
 import com.betacom.jpa.models.Socio;
 import com.betacom.jpa.repositories.IAbbonamentoRepository;
 import com.betacom.jpa.repositories.ISocioRepository;
 import com.betacom.jpa.services.interfaces.IAbbonamentoServices;
+
+import static com.betacom.jpa.utilities.Mapper.buildAbbonamentoDTO;
+
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,10 +54,23 @@ public class AbbonamentoImpl implements IAbbonamentoServices{
 		Abbonamento abb = abbR.findById(id)
 				.orElseThrow(() -> new AcademyException("Abbonamento non trovato"));
 
-		if (!abb.getAttivitas().isEmpty())
-			throw new AcademyException("Ci sono attivita per quest'abbonamento");
+		if (!abb.getAttivitas().isEmpty()) {
+			log.debug("cancel all ativita for this abbonamento");
+			abb.getAttivitas().removeAll(abb.getAttivitas());
+			abbR.save(abb);
+		}
 		
 		abbR.delete(abb);
+	}
+
+	@Override
+	public AbbonamentoDTO getById(Integer id) throws Exception {
+		log.debug("getById {}", id);
+		
+		Abbonamento abb = abbR.findById(id)
+				.orElseThrow(() -> new AcademyException("Abbonamento non trovato"));
+		
+		return buildAbbonamentoDTO(abb);
 	}
 
 

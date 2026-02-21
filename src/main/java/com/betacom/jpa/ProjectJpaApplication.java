@@ -10,6 +10,7 @@ import com.betacom.jpa.process.MainProcess;
 
 @SpringBootApplication
 public class ProjectJpaApplication {
+
 	@Autowired
 	private MainProcess mainp;
 	

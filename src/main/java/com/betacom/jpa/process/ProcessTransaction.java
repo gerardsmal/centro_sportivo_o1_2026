@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.betacom.jpa.dto.inputs.AbbonamentoReq;
 import com.betacom.jpa.dto.inputs.CertificatoReq;
 import com.betacom.jpa.dto.inputs.SocioReq;
-import com.betacom.jpa.exceptions.AcademyException;
+import com.betacom.jpa.dto.outputs.AbbonamentoDTO;
 import com.betacom.jpa.services.interfaces.IAbbonamentoServices;
 import com.betacom.jpa.services.interfaces.ICertificatoServices;
 import com.betacom.jpa.services.interfaces.ISocioServices;
@@ -50,6 +50,11 @@ public class ProcessTransaction {
 		abbS.create(req);
 	}
 
+	public AbbonamentoDTO getAbbonamento(Integer id) throws Exception{
+		return abbS.getById(id);
+
+	}
+	
 	@Transactional (rollbackFor = Exception.class)
 	public void deleteAbbonamento(Integer id) throws Exception{
 		abbS.delete(id);
