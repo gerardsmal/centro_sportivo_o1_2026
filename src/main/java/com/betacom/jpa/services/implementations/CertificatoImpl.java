@@ -12,23 +12,22 @@ import com.betacom.jpa.models.Socio;
 import com.betacom.jpa.repositories.ICertificatoRepository;
 import com.betacom.jpa.repositories.ISocioRepository;
 import com.betacom.jpa.services.interfaces.ICertificatoServices;
+import com.betacom.jpa.services.interfaces.IMessagioServices;
 
 import static com.betacom.jpa.utilities.Utils.stringToDate;
 
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class CertificatoImpl implements ICertificatoServices{
 	private final ICertificatoRepository repoC;
 	private final ISocioRepository repoS;
-	
-	public CertificatoImpl(ICertificatoRepository repoC, ISocioRepository repoS) {
-		this.repoC = repoC;
-		this.repoS = repoS;
-	}
+	private final IMessagioServices msgS;
 	
 	@Transactional (rollbackFor = AcademyException.class)
 	@Override
@@ -44,6 +43,19 @@ public class CertificatoImpl implements ICertificatoServices{
 		repoC.save(cert);
 		
 	}
+	@Transactional (rollbackFor = AcademyException.class)	
+	@Override
+	public void update(CertificatoReq req) throws Exception {
+		log.debug("update {}", req);
+		Certificato cert = repoC.findById(req.getId())
+				.orElseThrow(() -> new AcademyException(msgS.get("cert_exist")));
+		if (req.getTipo() != null)
+			cert.setTipo(req.getTipo());
+		if (req.getDataCertificato() != null)
+			cert.setDataCertificato(stringToDate(req.getDataCertificato()));
+		repoC.save(cert);
+	}
+
 
 	@Override
 	public List<SocioDTO> listSocio() throws Exception {
@@ -64,6 +76,7 @@ public class CertificatoImpl implements ICertificatoServices{
 						.build()))
 				.toList();
 	}
+
 
 
 

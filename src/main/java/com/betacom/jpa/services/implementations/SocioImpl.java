@@ -100,6 +100,7 @@ public class SocioImpl implements ISocioServices{
 	public List<SocioDTO> findAll() throws AcademyException {
 		log.debug("findAll");
 		List<Socio> lS = socioR.findAll();
+
 		return lS.stream()
 				.map(s -> SocioDTO.builder()
 						.id(s.getId())
@@ -107,7 +108,7 @@ public class SocioImpl implements ISocioServices{
 						.nome(s.getNome())
 						.codiceFiscale(s.getCodiceFiscale())
 						.email(s.getEmail())
-						.certificato(CertificatoDTO.builder()
+						.certificato((s.getCertificato() == null) ? null :CertificatoDTO.builder()
 								.id(s.getCertificato().getId())
 								.tipo(s.getCertificato().getTipo())
 								.dataCertificato(s.getCertificato().getDataCertificato())
@@ -117,9 +118,6 @@ public class SocioImpl implements ISocioServices{
 						).toList();
 	}
 	
-	
-	
-
 	@Override
 	public SocioDTO findById(Integer id) throws Exception {
 		log.debug("findById: {}", id);
@@ -132,7 +130,7 @@ public class SocioImpl implements ISocioServices{
 				.nome(s.getNome())
 				.codiceFiscale(s.getCodiceFiscale())
 				.email(s.getEmail())
-				.certificato(CertificatoDTO.builder()
+				.certificato((s.getCertificato() == null) ? null :CertificatoDTO.builder()
 						.id(s.getCertificato().getId())
 						.tipo(s.getCertificato().getTipo())
 						.dataCertificato(s.getCertificato().getDataCertificato())
