@@ -17,6 +17,7 @@ import com.betacom.jpa.repositories.IAttivitaRepository;
 import com.betacom.jpa.services.interfaces.IAttivitaServices;
 
 import static com.betacom.jpa.utilities.Mapper.buildAbbonamentoDTO;
+import static com.betacom.jpa.utilities.Mapper.buildAttivitaDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -109,12 +110,7 @@ public class AttivitaImp implements IAttivitaServices{
 	public List<AttivitaDTO> list() {
 		log.debug("list");
 		List<Attivita> lA = attivR.findAll();
-		return lA.stream()
-				.map(a -> AttivitaDTO.builder()
-						.id(a.getId())
-						.description(a.getDescription())
-						.build()
-						).toList();
+		return buildAttivitaDTO(lA);
 	}
 
 	@Override

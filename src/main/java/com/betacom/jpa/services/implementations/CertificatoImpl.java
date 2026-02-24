@@ -15,6 +15,7 @@ import com.betacom.jpa.services.interfaces.ICertificatoServices;
 import com.betacom.jpa.services.interfaces.IMessagioServices;
 
 import static com.betacom.jpa.utilities.Utils.stringToDate;
+import static com.betacom.jpa.utilities.Mapper.buildSocioDTO;
 
 import java.util.List;
 
@@ -61,23 +62,10 @@ public class CertificatoImpl implements ICertificatoServices{
 	public List<SocioDTO> listSocio() throws Exception {
 		log.debug("listSocio");
 		List<Certificato> lC = repoC.findAll();
+		
 		return lC.stream()
-				.map((c -> SocioDTO.builder()
-						.id(c.getSocio().getId())
-						.nome(c.getSocio().getNome())
-						.cognome(c.getSocio().getCognome())
-						.codiceFiscale(c.getSocio().getCodiceFiscale())
-						.email(c.getSocio().getEmail())
-						.certificato(CertificatoDTO.builder()
-								.id(c.getId())
-								.tipo(c.getTipo())
-								.dataCertificato(c.getDataCertificato())
-								.build())
-						.build()))
+				.map(c -> buildSocioDTO(c.getSocio()))
 				.toList();
+						
 	}
-
-
-
-
 }

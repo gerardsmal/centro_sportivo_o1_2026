@@ -21,6 +21,7 @@ import com.betacom.jpa.services.interfaces.IMessagioServices;
 import com.betacom.jpa.services.interfaces.ISocioServices;
 
 import static com.betacom.jpa.utilities.Mapper.buildAbbonamentoDTO;
+import static com.betacom.jpa.utilities.Mapper.buildSocioDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -101,21 +102,7 @@ public class SocioImpl implements ISocioServices{
 		log.debug("findAll");
 		List<Socio> lS = socioR.findAll();
 
-		return lS.stream()
-				.map(s -> SocioDTO.builder()
-						.id(s.getId())
-						.cognome(s.getCognome())
-						.nome(s.getNome())
-						.codiceFiscale(s.getCodiceFiscale())
-						.email(s.getEmail())
-						.certificato((s.getCertificato() == null) ? null :CertificatoDTO.builder()
-								.id(s.getCertificato().getId())
-								.tipo(s.getCertificato().getTipo())
-								.dataCertificato(s.getCertificato().getDataCertificato())
-								.build())
-						.abbonamentos(buildAbbonamentoDTO(s.getAbbonementos()))
-						.build()				
-						).toList();
+		return buildSocioDTO(lS);
 	}
 	
 	@Override
@@ -124,18 +111,6 @@ public class SocioImpl implements ISocioServices{
 		Socio s = socioR.findById(id)
 				.orElseThrow(() -> new AcademyException("Socio non trovato in DB:" + id));
 		
-		return SocioDTO.builder()
-				.id(s.getId())
-				.cognome(s.getCognome())
-				.nome(s.getNome())
-				.codiceFiscale(s.getCodiceFiscale())
-				.email(s.getEmail())
-				.certificato((s.getCertificato() == null) ? null :CertificatoDTO.builder()
-						.id(s.getCertificato().getId())
-						.tipo(s.getCertificato().getTipo())
-						.dataCertificato(s.getCertificato().getDataCertificato())
-						.build())
-				.abbonamentos(buildAbbonamentoDTO(s.getAbbonementos()))
-				.build();
+		return buildSocioDTO(s);
 	}
 }
