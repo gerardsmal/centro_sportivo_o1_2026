@@ -90,7 +90,7 @@ public class MainProcess {
 	
 	private void listSocio() {
 		try {
-			List<SocioDTO> lS = socioS.findAll();
+			List<SocioDTO> lS = socioS.find(null,null,null,null);
 			lS.forEach(s -> log.debug(s.toString()));
 		} catch (Exception e) {
 			log.error(e.getMessage());

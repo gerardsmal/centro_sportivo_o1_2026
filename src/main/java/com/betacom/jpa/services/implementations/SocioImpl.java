@@ -98,9 +98,9 @@ public class SocioImpl implements ISocioServices{
 	}
 
 	@Override
-	public List<SocioDTO> findAll() throws AcademyException {
-		log.debug("findAll");
-		List<Socio> lS = socioR.findAll();
+	public List<SocioDTO> find(Integer id, String nome, String cognome, Integer attivita) throws AcademyException {
+		log.debug("find {} / {} / {} / {}", id, nome, cognome, attivita);
+		List<Socio> lS = socioR.searchByFilter(id, nome, cognome, attivita);
 
 		return buildSocioDTO(lS);
 	}
@@ -112,5 +112,13 @@ public class SocioImpl implements ISocioServices{
 				.orElseThrow(() -> new AcademyException("Socio non trovato in DB:" + id));
 		
 		return buildSocioDTO(s);
+	}
+
+	@Override
+	public List<SocioDTO> findByAttivita(String attivita) throws Exception {
+		log.debug("findByAttivita: {}", attivita);
+		List<Socio>lS = socioR.searchByAttivita(attivita.toUpperCase());
+		
+		return buildSocioDTO(lS);
 	}
 }

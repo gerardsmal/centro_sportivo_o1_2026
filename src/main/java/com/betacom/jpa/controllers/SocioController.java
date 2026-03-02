@@ -19,7 +19,9 @@ import com.betacom.jpa.services.interfaces.ISocioServices;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/rest/socio")
@@ -29,11 +31,16 @@ public class SocioController {
 	private final IMessagioServices msgS;
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> list(){
+	public ResponseEntity<Object> list(
+			@RequestParam (required = false)  Integer id,
+			@RequestParam (required = false)  String nome,
+			@RequestParam (required = false)  String cognome,
+			@RequestParam (required = false)  Integer attivita
+			){
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			r= socioS.findAll();
+			r= socioS.find(id, nome, cognome, attivita);
 		} catch (Exception e) {
 			r=e.getMessage();
 			status = HttpStatus.BAD_REQUEST;
@@ -41,6 +48,20 @@ public class SocioController {
 		return ResponseEntity.status(status).body(r);
 		
 	}
+	@GetMapping("/findByAttivita")
+	public ResponseEntity<Object> findByAttivita (@RequestParam (required = true)  String attivita){
+		Object r = new Object();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			r= socioS.findByAttivita(attivita);
+		} catch (Exception e) {
+			r=e.getMessage();
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);
+		
+	}
+
 	@GetMapping("/findById")
 	public ResponseEntity<Object> findById (@RequestParam (required = true)  Integer id){
 		Object r = new Object();
@@ -54,6 +75,7 @@ public class SocioController {
 		return ResponseEntity.status(status).body(r);
 		
 	}
+
 	
 	@PostMapping("/create")
 	public ResponseEntity<Resp> create(@RequestBody(required = true)  SocioReq req){
@@ -77,6 +99,7 @@ public class SocioController {
 			socioS.update(req);
 			r.setMsg(msgS.get("rest_updated"));
 		} catch (Exception e) {
+			log.debug("Error:" + e.getMessage());
 			r.setMsg(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
 		}

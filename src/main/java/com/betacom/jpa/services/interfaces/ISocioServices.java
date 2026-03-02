@@ -13,6 +13,7 @@ public interface ISocioServices {
 	void delete(Integer id) throws AcademyException;
 
 	
-	List<SocioDTO> findAll() throws Exception;
+	List<SocioDTO> find(Integer id, String nome, String cognome, Integer attivita) throws Exception;
+	List<SocioDTO> findByAttivita(String attivita) throws Exception;
 	SocioDTO findById(Integer id) throws Exception;
 }
