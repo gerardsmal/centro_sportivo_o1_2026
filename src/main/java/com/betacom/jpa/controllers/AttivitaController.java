@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.jpa.dto.inputs.AttivitaReq;
-import com.betacom.jpa.dto.inputs.SocioReq;
 import com.betacom.jpa.response.Resp;
 import com.betacom.jpa.services.interfaces.IAttivitaServices;
 import com.betacom.jpa.services.interfaces.IMessagioServices;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("rest/atttivita")
@@ -29,6 +30,7 @@ public class AttivitaController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<Resp> create(@RequestBody(required = true)  AttivitaReq req){
+		log.debug("create controller {}", req);
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		try {
@@ -77,6 +79,7 @@ public class AttivitaController {
 			attS.createAttivitaAbbonamento(req);
 			r.setMsg(msgS.get("rest_created"));
 		} catch (Exception e) {
+			log.debug(e.getMessage());
 			r.setMsg(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
 		}

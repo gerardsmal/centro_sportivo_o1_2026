@@ -7,11 +7,11 @@ import java.util.List;
 import org.assertj.core.api.Assert;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -25,26 +25,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SocioControlerTest {
 	@Autowired
 	private SocioController socioC;
 	
-	@SuppressWarnings("unchecked")
+	
 	@Test
-	@Order(1)	
-	public void myTest() {
-		getSocio();
-		getSocioError();
-		createSocio();
-		updateSocio();
-		deleteSocio();
-		list();
-	}
-	
-	
+	@Order(1)		
 	public void getSocio() {
 		log.debug("Test getSocio");
 		ResponseEntity<?> resp = socioC.findById(1);
@@ -52,13 +41,16 @@ public class SocioControlerTest {
 		SocioDTO soc = (SocioDTO)resp.getBody();
 		Assertions.assertThat(soc.getNome()).isEqualTo("Paolo");
 	}
+	@Test
+	@Order(2)	
 	public void getSocioError() {
 		log.debug("Test getSocio error");
 		ResponseEntity<?> resp = socioC.findById(99);
 		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
 		Assertions.assertThat(resp.getBody()).isEqualTo("Socio non trovato in DB:99");
 	}
-
+	@Test
+	@Order(3)	
 	public void createSocio() {
 
 		log.debug("Create socio");
@@ -76,27 +68,17 @@ public class SocioControlerTest {
 		
 	}
 
-	public void list() {
-		log.debug("Test list socio");
-		
-		ResponseEntity<?> resp = socioC.list(null, null, null, null);
-		assertEquals(HttpStatus.OK, resp.getStatusCode());
-		Object body = resp.getBody();
-		
-		List<SocioDTO> lS = (List<SocioDTO>) body;
-		
-		Assertions.assertThat(lS.size()).isGreaterThan(0);
-	//	Assertions.assertThat(lS.get(0).getCognome()).isEqualTo("Rossi");
-		lS.forEach(s -> log.debug(s.toString()));
-		// updateSocio();
-	}
-	
+	@Test
+	@Order(4)	
 	public void updateSocio() {
 		log.debug("******* Update socio  *******");
 		
 		SocioReq req = new SocioReq();
 		req.setId(3);
 		req.setCognome("LaBrutta");
+		req.setEmail("update@gmail.com");
+		req.setNome("Paola");
+		req.setCodiceFiscale("UPD001");
 		
 		ResponseEntity<Resp> resp = socioC.update(req);
 	
@@ -108,7 +90,27 @@ public class SocioControlerTest {
 		
 				
 	}
-
+	@Test
+	@Order(5)	
+	public void updateSocioError() {
+		log.debug("******* Update socio error  *******");
+		
+		SocioReq req = new SocioReq();
+		req.setId(30);
+		req.setCognome("LaBrutta");
+		req.setEmail("update@gmail.com");
+		req.setNome("Paola");
+		req.setCodiceFiscale("UPD001");
+		
+		ResponseEntity<Resp> resp = socioC.update(req);
+	
+		
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+		
+				
+	}
+	@Test
+	@Order(6)	
 	public void deleteSocio() {
 		log.debug("******* delete socio  *******");
 		
@@ -122,6 +124,36 @@ public class SocioControlerTest {
 		Assertions.assertThat(r.getMsg()).isEqualTo("rest_deleted");
 		
 				
+	}
+	
+	@Test
+	@Order(7)	
+	public void deleteSocioError() {
+		log.debug("******* delete socio  *******");
+		
+		
+		ResponseEntity<Resp> resp = socioC.delete(30);
+	
+		
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());		
+				
+	}
+	
+	@Test
+	@Order(8)	
+	public void list() {
+		log.debug("Test list socio");
+		
+		ResponseEntity<?> resp = socioC.list(null, null, null, null);
+		assertEquals(HttpStatus.OK, resp.getStatusCode());
+		Object body = resp.getBody();
+		
+		List<SocioDTO> lS = (List<SocioDTO>) body;
+		
+		Assertions.assertThat(lS.size()).isGreaterThan(0);
+	//	Assertions.assertThat(lS.get(0).getCognome()).isEqualTo("Rossi");
+		lS.forEach(s -> log.debug(s.toString()));
+		// updateSocio();
 	}
 
 }

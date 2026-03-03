@@ -33,7 +33,7 @@ public class AttivitaImp implements IAttivitaServices{
 	@Transactional (rollbackFor = AcademyException.class)
 	@Override
 	public void create(AttivitaReq req) throws Exception {
-		log.debug("create []", req);
+		log.debug("create {}", req);
 		if (attivR.existsByDescription(req.getDescription().trim().toUpperCase())){
 			throw new AcademyException("Attivita presente in db:" + req.getDescription());	
 		}

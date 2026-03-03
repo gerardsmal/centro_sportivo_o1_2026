@@ -36,14 +36,14 @@ public class MainProcess {
 	}
 	
 	public void executeSocio() {
-		log.debug("Begin executeSocio");
-		SocioReq req = new SocioReq();
-		req.setNome("Aldo");
-		req.setCognome("Bonimi");
-		req.setCodiceFiscale("ALDB090190");
-		req.setEmail("a.bonino@gmail.it");
-		int id = 0;
-		try {
+//		log.debug("Begin executeSocio");
+//		SocioReq req = new SocioReq();
+//		req.setNome("Aldo");
+//		req.setCognome("Bonimi");
+//		req.setCodiceFiscale("ALDB090190");
+//		req.setEmail("a.bonino@gmail.it");
+//		int id = 0;
+//		try {
 //			id = trans.aggiornamenti(req);
 //			CertificatoReq reqC = new CertificatoReq();
 //			reqC.setDataCertificato("01/02/2026");
@@ -51,7 +51,7 @@ public class MainProcess {
 //			trans.insertCertificato(reqC);
 			
 //			ListSocioViaCertificato();
-			trans.delete(10);
+//			trans.delete(10);
 //			createAbbonamento(10);
 			
 //			listSocio();
@@ -73,55 +73,55 @@ public class MainProcess {
 //			log.debug("**** abbonamenti per attivita (4)");
 //			attiv.getByAttivita(4);
 			
-		} catch (Exception e) {
-			log.error("Error found in process: {}", e.getMessage());
-		}
+//		} catch (Exception e) {
+//			log.error("Error found in process: {}", e.getMessage());
+//		}
 		//delete(id);
 		
 		
 	}
 
-	private void createAbbonamento (Integer id) throws Exception{
-		AbbonamentoReq req = new AbbonamentoReq();
-		req.setDataInscizione("15/12/2025");
-		req.setSocioID(id);
-		trans.insertAbbonamento(req);
-	}
-	
-	private void listSocio() {
-		try {
-			List<SocioDTO> lS = socioS.find(null,null,null,null);
-			lS.forEach(s -> log.debug(s.toString()));
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
-	}
-	
-	private void listSocioById(Integer id) {
-		try {
-			SocioDTO s = socioS.findById(id);
-			log.debug(s.toString());
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
-	}
-	
-	private void ListSocioViaCertificato() {
-		List<SocioDTO> lS;
-		try {
-			lS = certS.listSocio();
-			lS.forEach(c -> log.debug(c.toString()));
-
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
-	}
-	
-	private void createAbbonamentoAvvitita(int abbID, int attiId) throws Exception{
-		AttivitaReq req = new AttivitaReq();
-		req.setId(attiId);
-		req.setAbbonamentID(abbID);
-		attiv.createAttivitaAbbonamento(req);
-	}
+//	private void createAbbonamento (Integer id) throws Exception{
+//		AbbonamentoReq req = new AbbonamentoReq();
+//		req.setDataInscizione("15/12/2025");
+//		req.setSocioID(id);
+//		trans.insertAbbonamento(req);
+//	}
+//	
+//	private void listSocio() {
+//		try {
+//			List<SocioDTO> lS = socioS.find(null,null,null,null);
+//			lS.forEach(s -> log.debug(s.toString()));
+//		} catch (Exception e) {
+//			log.error(e.getMessage());
+//		}
+//	}
+//	
+//	private void listSocioById(Integer id) {
+//		try {
+//			SocioDTO s = socioS.findById(id);
+//			log.debug(s.toString());
+//		} catch (Exception e) {
+//			log.error(e.getMessage());
+//		}
+//	}
+//	
+//	private void ListSocioViaCertificato() {
+//		List<SocioDTO> lS;
+//		try {
+//			lS = certS.listSocio();
+//			lS.forEach(c -> log.debug(c.toString()));
+//
+//		} catch (Exception e) {
+//			log.error(e.getMessage());
+//		}
+//	}
+//	
+//	private void createAbbonamentoAvvitita(int abbID, int attiId) throws Exception{
+//		AttivitaReq req = new AttivitaReq();
+//		req.setId(attiId);
+//		req.setAbbonamentID(abbID);
+//		attiv.createAttivitaAbbonamento(req);
+//	}
 }
 
