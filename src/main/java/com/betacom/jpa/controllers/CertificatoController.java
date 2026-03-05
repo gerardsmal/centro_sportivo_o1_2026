@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.jpa.dto.inputs.CertificatoReq;
@@ -59,6 +60,20 @@ public class CertificatoController {
 		HttpStatus status = HttpStatus.OK;
 		try {
 			r= certS.listSocio();
+		} catch (Exception e) {
+			r=e.getMessage();
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);
+		
+	}
+
+	@GetMapping("/findById")
+	public ResponseEntity<Object> findById(@RequestParam (required = true)  Integer id){
+		Object r = new Object();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			r= certS.findById(id);
 		} catch (Exception e) {
 			r=e.getMessage();
 			status = HttpStatus.BAD_REQUEST;

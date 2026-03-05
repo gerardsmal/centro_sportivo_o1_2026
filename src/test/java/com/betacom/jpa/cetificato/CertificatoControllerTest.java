@@ -2,6 +2,7 @@ package com.betacom.jpa.cetificato;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
@@ -35,7 +36,7 @@ public class CertificatoControllerTest {
 	public void createCertTest() {
 		log.debug("create certificato");
 		CertificatoReq req = new CertificatoReq();
-		req.setDataCertificato("02/02/2025");
+		req.setDataCertificato(LocalDate.now());
 		req.setTipo(false);
 		req.setSocioID(1);
 		
@@ -67,7 +68,7 @@ public class CertificatoControllerTest {
 		log.debug("update certificato");
 		CertificatoReq req = new CertificatoReq();
 		req.setTipo(false);
-		req.setDataCertificato("12-02-2026");
+		req.setDataCertificato(LocalDate.now());
 		req.setId(1);
 		
 		ResponseEntity<Resp> resp = certC.update(req);

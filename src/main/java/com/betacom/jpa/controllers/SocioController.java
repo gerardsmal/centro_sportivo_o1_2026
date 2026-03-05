@@ -41,7 +41,9 @@ public class SocioController {
 		HttpStatus status = HttpStatus.OK;
 		try {
 			r= socioS.find(id, nome, cognome, attivita);
+			log.debug("response ok");
 		} catch (Exception e) {
+			log.debug("error:" + e.getMessage());
 			r=e.getMessage();
 			status = HttpStatus.BAD_REQUEST;
 		}
@@ -70,7 +72,7 @@ public class SocioController {
 			r= socioS.findById(id);
 		} catch (Exception e) {
 			r=e.getMessage();
-			status = HttpStatus.BAD_REQUEST;
+			status = HttpStatus.BAD_REQUEST; 
 		}
 		return ResponseEntity.status(status).body(r);
 		

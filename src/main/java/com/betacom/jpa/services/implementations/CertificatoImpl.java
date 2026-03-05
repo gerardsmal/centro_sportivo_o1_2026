@@ -37,8 +37,8 @@ public class CertificatoImpl implements ICertificatoServices{
 		Socio soc = repoS.findById(req.getSocioID())
 				.orElseThrow(() -> new AcademyException("Socio non trovato :" + req.getSocioID()));
 		Certificato cert = new Certificato();
-		cert.setTipo((req.getTipo() == null) ? false : true);
-		cert.setDataCertificato(stringToDate(req.getDataCertificato()));
+		cert.setTipo((req.getTipo() == null) ? false : req.getTipo());
+		cert.setDataCertificato(req.getDataCertificato());
 		cert.setSocio(soc);
 		
 		repoC.save(cert);
@@ -49,11 +49,11 @@ public class CertificatoImpl implements ICertificatoServices{
 	public void update(CertificatoReq req) throws Exception {
 		log.debug("update {}", req);
 		Certificato cert = repoC.findById(req.getId())
-				.orElseThrow(() -> new AcademyException(msgS.get("cert_exist")));
+				.orElseThrow(() -> new AcademyException(msgS.get("cert_ntfnd")));
 		if (req.getTipo() != null)
 			cert.setTipo(req.getTipo());
 		if (req.getDataCertificato() != null)
-			cert.setDataCertificato(stringToDate(req.getDataCertificato()));
+			cert.setDataCertificato(req.getDataCertificato());
 		repoC.save(cert);
 	}
 
@@ -67,5 +67,18 @@ public class CertificatoImpl implements ICertificatoServices{
 				.map(c -> buildSocioDTO(c.getSocio()))
 				.toList();
 						
+	}
+	@Override
+	public CertificatoDTO findById(Integer id) throws Exception {
+		log.debug("findById {}", id);
+		Certificato cert = repoC.findById(id)
+				.orElseThrow(() -> new AcademyException(msgS.get("cert_ntfnd")));
+		
+		
+		return CertificatoDTO.builder()
+				.id(cert.getId())
+				.dataCertificato(cert.getDataCertificato())
+				.tipo(cert.getTipo())
+				.build();
 	}
 }
