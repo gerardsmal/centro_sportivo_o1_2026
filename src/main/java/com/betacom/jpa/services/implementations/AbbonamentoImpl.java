@@ -40,7 +40,7 @@ public class AbbonamentoImpl implements IAbbonamentoServices{
 		Socio soc = socioR.findById(req.getSocioID())
 				.orElseThrow(() -> new AcademyException("Socio non trovato in DB:" + req.getSocioID()));
 		Abbonamento abb = new Abbonamento();
-		abb.setDataInscizione( stringToDate(req.getDataInscizione()));
+		abb.setDataInscizione(req.getDataInscizione());
 		abb.setSocio(soc);
 		
 		abbR.save(abb);

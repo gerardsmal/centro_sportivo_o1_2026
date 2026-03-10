@@ -2,6 +2,8 @@ package com.betacom.jpa.abbonamento;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.time.LocalDate;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -32,7 +34,7 @@ public class AbbonamentoControllerTest {
 	public void create() {
 		log.debug("create Abbonamento");
 		AbbonamentoReq req = new AbbonamentoReq();
-		req.setDataInscizione("03/03/2026");
+		req.setDataInscizione(LocalDate.now());
 		req.setSocioID(1);
 		
 		ResponseEntity<Resp> resp = abboC.create(req);
